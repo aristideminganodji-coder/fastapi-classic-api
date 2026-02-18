@@ -1,7 +1,13 @@
 from fastapi import FastAPI
+from app.database import engine,Base
+#important : on importe le modele pour que SQLALCHEMY le connaisse avant create_all
+from app.models import user
 
-app = FastAPI()
+#on cree les tables 
+Base.metadata.create_all(bind=engine)
+
+app=FastAPI()
 
 @app.get("/")
 def read_root():
-	return {"message" : "API is running"}
+	return {"status":"API connected to PostgreSQL !"}
