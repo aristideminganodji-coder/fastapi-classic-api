@@ -1,3 +1,4 @@
+from typing import Optional 
 from pydantic import BaseModel,EmailStr
 
 class UserCreate(BaseModel):
@@ -11,3 +12,8 @@ class UserOut(BaseModel):
 
 class UserInDB(UserOut):
 	hashed_password:str
+
+class UserUpdate(BaseModel):
+	email:Optional[EmailStr]=None
+	password:Optional[str]=None
+	is_active:Optional[bool]=None

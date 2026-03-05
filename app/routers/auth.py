@@ -24,3 +24,15 @@ def register(user:schemas.UserCreate,db:Session=Depends(get_db)):
 	db.refresh(db_user)
 
 	return db_user
+
+@router.post("/login-simple")
+def login_simple(user:schemas.UserCreate,db:Session=Depends(get_db)):
+	#chercher l'utilisateur
+	db_user=db.query(models.User).filter(models.User.email==user.email).first()
+	
+
+	#Verifier le mot de passe
+	if not db_user or not pwd_context.verify(user.password,db_user.hashed_password):
+	    raise HTTPException(status_code=401,detail="Email ou mot de passe incorrect")
+
+	return {"message":"Connexion reussie","user_id":db_user.id}
