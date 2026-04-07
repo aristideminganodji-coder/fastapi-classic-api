@@ -1,17 +1,21 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from dotenv import load_dotenv
+import os
 
-SQLALCHEMY_DATABASE_URL="postgresql://fastapi_user:password123@localhost/fastapi_classic"
+load_dotenv()
+DATABASE_URL=os.getenv("DATABASE_URL")
+#SQLALCHEMY_DATABASE_URL="postgresql://fastapi_user:password123@localhost/fastapi_classic"
 
-engine=create_engine(SQLALCHEMY_DATABASE_URL)
+engine=create_engine(DATABASE_URL)
 SessionLocal=sessionmaker(autocommit=False,autoflush=False,bind=engine)
 Base=declarative_base()
 
-#fonction pour obtenir une session de DB
+#fonction pour obtenir une session de DB 
 def get_db():
-	db=SessionLocal()
-	try:
-	    yield db
-	finally:
-	    db.close()
+    db=SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
